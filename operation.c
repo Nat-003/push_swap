@@ -12,11 +12,10 @@ void sa(t_stack *a,t_ops *ops)
     a->data[0] = a->data[1];
     a->data[1] = tmp;
     ops->sa++;
-     printf("--------%d\n",ops->sa);
     write(1, "sa\n", 3);
 }
 
-void sb(t_stack *b)
+void sb(t_stack *b,t_ops *ops)
 {
     int tmp;
     if (b->size < 2)
@@ -24,10 +23,11 @@ void sb(t_stack *b)
     tmp = b->data[0];
     b->data[0] = b->data[1];
     b->data[1] = tmp;
+    ops->sb++;
     write(1, "sb\n", 3);
 }
 
-void ss(t_stack *a, t_stack *b)
+void ss(t_stack *a, t_stack *b,t_ops *ops)
 {
     int tmp;
     // Manual swap for a to avoid double printing sa/sb
@@ -44,10 +44,11 @@ void ss(t_stack *a, t_stack *b)
         b->data[0] = b->data[1];
         b->data[1] = tmp;
     }
+    ops->ss++;
     write(1, "ss\n", 3);
 }
 
-void pa(t_stack *a, t_stack *b)
+void pa(t_stack *a, t_stack *b,t_ops *ops)
 {
     int value;
     int i;
@@ -69,10 +70,11 @@ void pa(t_stack *a, t_stack *b)
     }
     a->data[0] = value;
     a->size++;
+    ops->pa++;
     write(1, "pa\n", 3);
 }
 
-void pb(t_stack *a, t_stack *b)
+void pb(t_stack *a, t_stack *b,t_ops *ops)
 {
     int value;
     int i;
@@ -94,6 +96,7 @@ void pb(t_stack *a, t_stack *b)
     }
     b->data[0] = value;
     b->size++;
+    ops->pb++;
     write(1, "pb\n", 3);
 }
 
@@ -112,11 +115,10 @@ void ra(t_stack *a,t_ops *ops)
     }
     a->data[a->size - 1] = first;
     ops->ra++;
-    printf("--_____%d\n",ops->ra);
     write(1, "ra\n", 3);
 }
 
-void rb(t_stack *b)
+void rb(t_stack *b,t_ops *ops)
 {
     int first;
     int i;
@@ -130,10 +132,11 @@ void rb(t_stack *b)
         i++;
     }
     b->data[b->size - 1] = first;
+    ops->rb++;
     write(1, "rb\n", 3);
 }
 
-void rr(t_stack *a, t_stack *b)
+void rr(t_stack *a, t_stack *b,t_ops *ops)
 {
     // Logic for ra without write
     int first;
@@ -155,10 +158,11 @@ void rr(t_stack *a, t_stack *b)
             b->data[i] = b->data[i + 1];
         b->data[b->size - 1] = first;
     }
+    ops->rr++;
     write(1, "rr\n", 3);
 }
 
-void rra(t_stack *a)
+void rra(t_stack *a,t_ops *ops)
 {
     int last;
     int i;
@@ -172,10 +176,11 @@ void rra(t_stack *a)
         i--;
     }
     a->data[0] = last;
+    ops->rra++;
     write(1, "rra\n", 4);
 }
 
-void rrb(t_stack *b)
+void rrb(t_stack *b,t_ops *ops)
 {
     int last;
     int i;
@@ -189,10 +194,11 @@ void rrb(t_stack *b)
         i--;
     }
     b->data[0] = last;
+    ops->rrb++;
     write(1, "rrb\n", 4);
 }
 
-void rrr(t_stack *a, t_stack *b)
+void rrr(t_stack *a, t_stack *b,t_ops *ops)
 {
     // Logic for rra without write
     int last;
@@ -214,5 +220,6 @@ void rrr(t_stack *a, t_stack *b)
             b->data[i] = b->data[i - 1];
         b->data[0] = last;
     }
+    ops->rrr++;
     write(1, "rrr\n", 4);
 }

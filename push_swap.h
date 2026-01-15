@@ -31,25 +31,26 @@ typedef struct s_stack
 
 /* Swap operations */
 void    sa(t_stack *a, t_ops *ops);
-void    sb(t_stack *b);
-void    ss(t_stack *a, t_stack *b);
+void    sb(t_stack *b, t_ops *ops);
+void    ss(t_stack *a, t_stack *b, t_ops *ops);
 
 /* Push operations */
-void    pa(t_stack *a, t_stack *b);
-void    pb(t_stack *a, t_stack *b);
+void    pa(t_stack *a, t_stack *b, t_ops *ops);
+void    pb(t_stack *a, t_stack *b, t_ops *ops);
 
 /* Rotate operations */
 void    ra(t_stack *a, t_ops *ops);
-void    rb(t_stack *b);
-void    rr(t_stack *a, t_stack *b);
+void    rb(t_stack *b, t_ops *ops);
+void    rr(t_stack *a, t_stack *b, t_ops *ops);
 
 /* Reverse rotate operations */
-void    rra(t_stack *a);
-void    rrb(t_stack *b);
-void    rrr(t_stack *a, t_stack *b);
+void    rra(t_stack *a, t_ops *ops);
+void    rrb(t_stack *b, t_ops *ops);
+void    rrr(t_stack *a, t_stack *b, t_ops *ops);
 
 /*disorder*/
 float disorder(int *arr, int size);
 
-void bubble_sort(t_stack *a, t_ops *ops);
+// void bubble_sort(t_stack *a, t_ops *ops);
+void bubble_sort(t_stack *a,t_ops *ops);
 #endif
