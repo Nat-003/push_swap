@@ -9,25 +9,48 @@ void print_stack(t_stack *s, char *name)
     printf("\n");
 }
 
-int main()
+void select_algorithm(float d, t_stack *s,t_ops *ops)
+{
+    if (d < 0.30f)
+    {
+        bubble_sort(s,ops);
+    }
+    else if (d < 0.50f)
+    {
+        printf("O(nVn)\n");
+        bubble_sort(s,ops);
+    }
+    else
+    {
+        printf("n log n\n");
+        bubble_sort(s,ops);
+    }
+}
+int main(int ac, char **av)
 {
     t_stack a;
-    int values[] = {1,3,2}; // Your test numbers
 
-    a.size = sizeof(values) / sizeof(values[0]);
+
+t_ops ops = {0};
+
+    if (ac < 2)
+        return (1);
+
+    a.size = ac - 1;
     a.data = malloc(sizeof(int) * a.size);
     if (!a.data)
         return (1);
-    float res = disorder(a.data,a.size);
-    printf("disorder: %f\n",res);
-    // Fill the stack
+
     for (int i = 0; i < a.size; i++)
-        a.data[i] = values[i];
+        a.data[i] = atoi(av[i + 1]);
 
     print_stack(&a, "Before");
-    
-    bubble_sort(&a);
-    
+
+    float res = disorder(a.data, a.size);
+    printf("disorder: %f\n", res);
+
+    select_algorithm(res, &a, &ops);
+    printf("%d",ops.ra);
     print_stack(&a, "After");
 
     free(a.data);

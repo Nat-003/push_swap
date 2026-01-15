@@ -1,7 +1,9 @@
 #include "push_swap.h"
 #include <unistd.h> // Ensure this is in your header or here for write()
+#include <stdio.h>
 
-void sa(t_stack *a)
+
+void sa(t_stack *a,t_ops *ops)
 {
     int tmp;
     if (a->size < 2)
@@ -9,6 +11,8 @@ void sa(t_stack *a)
     tmp = a->data[0];
     a->data[0] = a->data[1];
     a->data[1] = tmp;
+    ops->sa++;
+     printf("--------%d\n",ops->sa);
     write(1, "sa\n", 3);
 }
 
@@ -93,7 +97,7 @@ void pb(t_stack *a, t_stack *b)
     write(1, "pb\n", 3);
 }
 
-void ra(t_stack *a)
+void ra(t_stack *a,t_ops *ops)
 {
     int first;
     int i;
@@ -107,6 +111,8 @@ void ra(t_stack *a)
         i++;
     }
     a->data[a->size - 1] = first;
+    ops->ra++;
+    printf("--_____%d\n",ops->ra);
     write(1, "ra\n", 3);
 }
 
