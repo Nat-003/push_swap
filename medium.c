@@ -54,6 +54,20 @@ void sort(int *arr, int size)
         i++;
     }
 }
+
+int still_in_bucket(t_stack *a,int min, int max)
+{
+	int i;
+
+	i = 0;
+	while (i <a->size)
+	{
+		if (a->data[i] >= min && a->data[i] <= max)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 void bucket_sort(t_stack *a, t_stack *b, t_ops *ops)
 {
     int *copy;
@@ -62,11 +76,13 @@ void bucket_sort(t_stack *a, t_stack *b, t_ops *ops)
     int j;
     int bucket_count;
     int bucket_size;
+	int current_min;
+	int current_max;
 
     i = 0;
     copy = copy_arr(a);
-    bucket_count = ft_sqrt(a->size);
-    bucket_size = a->size / bucket_count;
+    bucket_count = ft_sqrt(a->size);  // number of bucket
+    bucket_size = a->size / bucket_count; // size of one bucket (ex: bucket 1 contain index 0 from 5)
     sort(copy,copy_size);
     while (i < a->size )
     {
@@ -84,9 +100,22 @@ void bucket_sort(t_stack *a, t_stack *b, t_ops *ops)
     }
     free(copy);
     i = 0;
+	j= 0;
+	current_min = 0;
+	current_max = bucket_size;
     while (i < bucket_count)
     {
-       
+		while (still_in_bucket(a, current_min,current_max))
+		{
+		if (a->data[0] >= current_min && a->data[0] <= current_max)
+		{
+			pb(a,b,ops);
+		}
+		else
+			ra(a,ops);
+		j++;
+		}	
+     i++; 
     }
     
 }
