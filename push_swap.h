@@ -53,4 +53,7 @@ float disorder(int *arr, int size);
 
 // void bubble_sort(t_stack *a, t_ops *ops);
 void bubble_sort(t_stack *a,t_ops *ops);
+
+// bucket sort O(nVn)
+void bucket_sort(t_stack *a, t_stack *b, t_ops *ops);
 #endif
