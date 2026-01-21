@@ -13,7 +13,8 @@ void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops)
 {
     if (d < 0.30f)
     {
-        bucket_sort(a,b,ops);
+        bubble_sort(a,ops);
+        printf("O(n2)");
     }
     else if (d < 0.50f)
     {
@@ -48,15 +49,15 @@ int total_operation(t_ops *ops)
 {
     int sum;
     sum = 0;
-    // printf("sa  : %d\n", ops->sa);
-    // printf("sb  : %d\n", ops->sb);
-    // printf("ss  : %d\n", ops->ss);
-    // printf("ra  : %d\n", ops->ra);
-    // printf("rb  : %d\n", ops->rb);
-    // printf("rr  : %d\n", ops->rr);
-    // printf("rra : %d\n", ops->rra);
-    // printf("rrb : %d\n", ops->rrb);
-    // printf("rrr : %d\n", ops->rrr);
+    printf("sa  : %d\n", ops->sa);
+    printf("sb  : %d\n", ops->sb);
+    printf("ss  : %d\n", ops->ss);
+    printf("ra  : %d\n", ops->ra);
+    printf("rb  : %d\n", ops->rb);
+    printf("rr  : %d\n", ops->rr);
+    printf("rra : %d\n", ops->rra);
+    printf("rrb : %d\n", ops->rrb);
+    printf("rrr : %d\n", ops->rrr);
     sum = ops->sa + ops->sb + ops->ss + \
           ops->ra + ops->rb + ops->rr + \
           ops->rra + ops->rrb + ops->rrr;
@@ -96,6 +97,7 @@ int main(int ac, char **av)
 
     // 3. Sorting
     float res = disorder(a.data, a.size);
+    printf("%f\n",disorder);
     select_algorithm(res, &a, &b, &ops);
 
     // --- AFTER ---
