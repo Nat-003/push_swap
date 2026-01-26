@@ -28,23 +28,6 @@ void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops)
     }
 }
 
-// void select_algorithm(float d, t_stack *a,t_ops *ops)
-// {
-//     if (d < 0.30f)
-//     {
-//         bubble_sort(a,ops);
-//     }
-//     else if (d < 0.50f)
-//     {
-//         printf("O(nVn)\n");
-//         bubble_sort(a,ops);
-//     }
-//     else
-//     {
-//         printf("n log n\n");
-//         bubble_sort(a,ops);
-//     }
-// }
 int total_operation(t_ops *ops)
 {
     int sum;
@@ -71,14 +54,14 @@ int main(int ac, char **av)
 
     if (ac < 2)
         return (0);
-
+	check_flags(av);
     // 1. Setup Stack A
-    a.size = ac - 1;
+    a.size = ac -2;
     a.data = malloc(sizeof(int) * a.size);
     if (!a.data)
         return (1);
     for (int i = 0; i < a.size; i++)
-        a.data[i] = atoi(av[i + 1]);
+        a.data[i] = atoi(av[i + 2]);
 
     // 2. Setup Stack B (Capacity is same as A, but current size is 0)
     b.data = malloc(sizeof(int) * a.size);
@@ -97,9 +80,9 @@ int main(int ac, char **av)
 
     // 3. Sorting
     float res = disorder(a.data, a.size);
-    printf("%f\n",disorder);
+    printf("%f\n", res);
     select_algorithm(res, &a, &b, &ops);
-
+	
     // --- AFTER ---
     printf("\n--- AFTER SORTING ---\n");
     print_stack(&a, "A");

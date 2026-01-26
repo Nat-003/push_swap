@@ -4,6 +4,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+#include <stdio.h> 
 
 typedef struct s_ops
 {
@@ -28,11 +29,14 @@ typedef struct s_stack
 
 
 
+void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops);
 
 /* Swap operations */
 void    sa(t_stack *a, t_ops *ops);
 void    sb(t_stack *b, t_ops *ops);
 void    ss(t_stack *a, t_stack *b, t_ops *ops);
+
+void check_flags(char **av);
 
 /* Push operations */
 void    pa(t_stack *a, t_stack *b, t_ops *ops);
