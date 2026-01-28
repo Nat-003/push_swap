@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 #include <stdio.h> 
+#include <limits.h>
 
 typedef struct s_ops
 {
@@ -27,16 +28,25 @@ typedef struct s_stack
     int size;
 } t_stack;
 
+typedef struct s_config
+{
+	int simple;
+	int medium;
+	int complex;
+	int adaptative;
+	int bench;
+} t_config;
 
-
+void innit_stack_b(t_stack *b,int size);
+t_config parser(char **av,t_stack *a);
 void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops);
-
+void error_exit();
 /* Swap operations */
 void    sa(t_stack *a, t_ops *ops);
 void    sb(t_stack *b, t_ops *ops);
 void    ss(t_stack *a, t_stack *b, t_ops *ops);
 
-void check_flags(char **av);
+int check_flags(char **av,t_config *config);
 
 /* Push operations */
 void    pa(t_stack *a, t_stack *b, t_ops *ops);
