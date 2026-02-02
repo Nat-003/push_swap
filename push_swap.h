@@ -70,4 +70,9 @@ void bubble_sort(t_stack *a,t_ops *ops);
 
 // bucket sort O(nVn)
 void bucket_sort(t_stack *a, t_stack *b, t_ops *ops);
+
+// radix sort
+void radix_ops(t_stack *a, t_stack *b, int n, int bit, t_ops *ops);
+void radix_lsd_sort(t_stack *a, t_stack *b, t_ops *ops);
+
 #endif

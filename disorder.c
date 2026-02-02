@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include "push_swap.h"
-
 
 float disorder(int *arr, int size)
 {

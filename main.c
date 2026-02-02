@@ -48,69 +48,30 @@ int total_operation(t_ops *ops)
 }
 int main(int ac, char **av)
 {
-    // t_stack a;
-    // t_stack b;
-    // t_ops ops = {0};
-
-    // if (ac < 2)
-    //     return (0);
-	// check_flags(av);
-    // // 1. Setup Stack A
-    // a.size = ac -2;
-    // a.data = malloc(sizeof(int) * a.size);
-    // if (!a.data)
-    //     return (1);
-    // for (int i = 0; i < a.size; i++)
-    //     a.data[i] = atoi(av[i + 2]);
-
-    // // 2. Setup Stack B (Capacity is same as A, but current size is 0)
-    // b.data = malloc(sizeof(int) * a.size);
-    // if (!b.data)
-    // {
-    //     free(a.data);
-    //     return (1);
-    // }
-    // b.size = 0;
-
-
-    // // 3. Sorting
-    // float res = disorder(a.data, a.size);
-    // printf("%f\n", res);
-    // select_algorithm(res, &a, &b, &ops);
-	
-   
-    
-
-    // // 4. Cleanup
-    // free(a.data);
-    // free(b.data);
-    // return (0);
 	t_stack a;
 	t_stack b;
 	t_ops ops= {0};
 	t_config config = parser(av,&a);
 	innit_stack_b(&b,a.size);
 
-	// --- BEFORE ---
     printf("--- BEFORE SORTING ---\n");
     print_stack(&a, "A");
     print_stack(&b, "B");
     printf("----------------------\n\n");
 
 	if (config.simple)
-	{
+    {
 		bubble_sort(&a,&ops);
-	}
+    }
 	else if (config.medium)
-	{
+    {
 		bucket_sort(&a,&b,&ops);
-	}
+    }
 	else if (config.complex)
-	{
-		bucket_sort(&a,&b,&ops);
-	}
+    {
+		radix_lsd_sort(&a,&b,&ops);
+    }
 	
-	 // --- AFTER ---
     printf("\n--- AFTER SORTING ---\n");
     print_stack(&a, "A");
     print_stack(&b, "B");
