@@ -37,10 +37,12 @@ typedef struct s_config
 	int bench;
 } t_config;
 
+// helper function
 void innit_stack_b(t_stack *b,int size);
-t_config parser(char **av,t_stack *a);
-void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops);
 void error_exit();
+// parser
+t_config parser(char **av,t_stack *a);
+
 /* Swap operations */
 void    sa(t_stack *a, t_ops *ops);
 void    sb(t_stack *b, t_ops *ops);
@@ -64,6 +66,12 @@ void    rrr(t_stack *a, t_stack *b, t_ops *ops);
 
 /*disorder*/
 float disorder(int *arr, int size);
+
+// bench
+void bench(t_ops *ops, float d, t_config *config);
+
+// adaptive 
+void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops);
 
 // void bubble_sort(t_stack *a, t_ops *ops);
 void bubble_sort(t_stack *a,t_ops *ops);

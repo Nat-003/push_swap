@@ -28,24 +28,7 @@ void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops)
     }
 }
 
-int total_operation(t_ops *ops)
-{
-    int sum;
-    sum = 0;
-    printf("sa  : %d\n", ops->sa);
-    printf("sb  : %d\n", ops->sb);
-    printf("ss  : %d\n", ops->ss);
-    printf("ra  : %d\n", ops->ra);
-    printf("rb  : %d\n", ops->rb);
-    printf("rr  : %d\n", ops->rr);
-    printf("rra : %d\n", ops->rra);
-    printf("rrb : %d\n", ops->rrb);
-    printf("rrr : %d\n", ops->rrr);
-    sum = ops->sa + ops->sb + ops->ss + \
-          ops->ra + ops->rb + ops->rr + \
-          ops->rra + ops->rrb + ops->rrr;
-    return (sum);
-}
+
 int main(int ac, char **av)
 {
 	t_stack a;
@@ -53,11 +36,11 @@ int main(int ac, char **av)
 	t_ops ops= {0};
 	t_config config = parser(av,&a);
 	innit_stack_b(&b,a.size);
-
-    printf("--- BEFORE SORTING ---\n");
-    print_stack(&a, "A");
-    print_stack(&b, "B");
-    printf("----------------------\n\n");
+    float d = disorder(a.data,a.size);
+    // printf("--- BEFORE SORTING ---\n");
+    // print_stack(&a, "A");
+    // print_stack(&b, "B");
+    // printf("----------------------\n\n");
 
 	if (config.simple)
     {
@@ -71,10 +54,14 @@ int main(int ac, char **av)
     {
 		radix_lsd_sort(&a,&b,&ops);
     }
-	
-    printf("\n--- AFTER SORTING ---\n");
-    print_stack(&a, "A");
-    print_stack(&b, "B");
-    printf("---------------------\n");
-	 printf("Total operations: %d\n", total_operation(&ops));
+    else if (config.adaptative)
+    {
+        select_algorithm(d,&a,&b,&ops);
+    }
+    
+	bench(&ops,d,&config);
+    // printf("\n--- AFTER SORTING ---\n");
+    // print_stack(&a, "A");
+    // print_stack(&b, "B");
+    // printf("---------------------\n");
 }

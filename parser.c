@@ -43,7 +43,7 @@ void set_flags(char *flag,t_config *config)
 		config->complex = 1;
 		check_config(config);
 	}
-	else if (ft_strcmp(flag,"--adaptive") == 0)
+	else if (ft_strcmp(flag,"--adaptative") == 0)
 	{
 		config->adaptative = 1;
 		check_config(config);
