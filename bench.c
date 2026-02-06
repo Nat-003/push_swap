@@ -54,3 +54,4 @@ void bench(t_ops *ops,float d, t_config *config)
    printf("disorder: %f %% \n",d);
    printf("Total operations: %d\n", res);
 }
+
