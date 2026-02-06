@@ -82,14 +82,14 @@ int main(int ac, char **av)
 	t_config config = parser(av,&a);
 	innit_stack_b(&b,a.size);
     float d = disorder(a.data,a.size);
-    printf("--- BEFORE SORTING ---\n");
-    print_stack(&a, "A");
-    print_stack(&b, "B");
-    printf("----------------------\n\n");
+    // printf("--- BEFORE SORTING ---\n");
+    // print_stack(&a, "A");
+    // print_stack(&b, "B");
+    // printf("----------------------\n\n");
 	set_config(&config,&a,&b,&ops,d);
 		
-    printf("\n--- AFTER SORTING ---\n");
-    print_stack(&a, "A");
-    print_stack(&b, "B");
-    printf("---------------------\n");
+//     printf("\n--- AFTER SORTING ---\n");
+//     print_stack(&a, "A");
+//     print_stack(&b, "B");
+//     printf("---------------------\n");
 }

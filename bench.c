@@ -3,21 +3,28 @@
 int total_operation(t_ops *ops)
 {
     int sum;
+
     sum = 0;
     printf("sa  : %d\n", ops->sa);
     printf("sb  : %d\n", ops->sb);
     printf("ss  : %d\n", ops->ss);
+    printf("pa  : %d\n", ops->pa);
+    printf("pb  : %d\n", ops->pb);
     printf("ra  : %d\n", ops->ra);
     printf("rb  : %d\n", ops->rb);
     printf("rr  : %d\n", ops->rr);
     printf("rra : %d\n", ops->rra);
     printf("rrb : %d\n", ops->rrb);
     printf("rrr : %d\n", ops->rrr);
-    sum = ops->sa + ops->sb + ops->ss + \
-          ops->ra + ops->rb + ops->rr + \
+
+    sum = ops->sa + ops->sb + ops->ss +
+          ops->pa + ops->pb +
+          ops->ra + ops->rb + ops->rr +
           ops->rra + ops->rrb + ops->rrr;
+
     return (sum);
 }
+
 
 char *adaptative_strat(t_config *config, float d)
 {
