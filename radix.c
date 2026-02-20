@@ -63,7 +63,7 @@ int get_max_bit(int max)
     return bits - 1;
 }
 
-void radix_lsd_sort(t_stack *a, t_stack *b, t_ops *ops)
+void radix_lsd_sort(t_program *p)
 {
     int *map;
     int n;
@@ -71,22 +71,22 @@ void radix_lsd_sort(t_stack *a, t_stack *b, t_ops *ops)
     int max_bit;
     int bit;
 
-    n = a->size;
+    n = p->a->size;
     if (n <= 1)
         return;
-    map = compress_stack(a);
+    map = compress_stack(p->a);
     max = n - 1;
     max_bit = get_max_bit(max);
     bit = 0;
     while (bit <= max_bit)
     {
-        radix_ops(a, b, n, bit, ops);
+        radix_ops(p, n, bit);
         bit++;
     }
     int i = 0;
     while (i < n)
     {
-        a->data[i] = map[a->data[i]];
+        p->a->data[i] = map[p->a->data[i]];
         i++;
     }
     free(map);

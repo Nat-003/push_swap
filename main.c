@@ -9,69 +9,69 @@ void print_stack(t_stack *s, char *name)
     printf("\n");
 }
 
-void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops)
+void select_algorithm(float d, t_program *p)
 {
     if (d < 0.30f)
     {
-        bubble_sort(a,ops);
+        bubble_sort(p);
         printf("O(n2)");
     }
     else if (d < 0.50f)
     {
         printf("O(nVn)\n");
-        bucket_sort(a,b,ops);
+        bucket_sort(p);
     }
     else
     {
         printf("n log n\n");
-        bucket_sort(a,b,ops);
+        radix_lsd_sort(p);
     }
 }
-void set_bench(t_config *config,t_stack *a, t_stack *b,t_ops *ops, float d)
+void set_bench(t_program *p, float d)
 {
-	if (config->simple && config->bench)
+	if (p->config->simple && p->config->bench)
     {
-		bubble_sort(a,ops);
-		bench(ops,d,config);
+		bubble_sort(p);
+		bench(p->ops,d,p->config);
     }
-	else if (config->medium && config->bench)
+	else if (p->config->medium && p->config->bench)
     {
-		bucket_sort(a,b,ops);
-		bench(ops,d,config);
+		bucket_sort(p);
+		bench(p->ops,d,p->config);
     }
-	else if (config->complex && config->bench)
+	else if (p->config->complex && p->config->bench)
     {
-		radix_lsd_sort(a,b,ops);
-		bench(ops,d,config);
+		radix_lsd_sort(p);
+		bench(p->ops,d,p->config);;
     }
-    else if (config->adaptative && config->bench)
+    else if (p->config->adaptative && p->config->bench)
     {
-        select_algorithm(d,a,b,ops);
-		bench(ops,d,config);
+        select_algorithm(d,p);
+		bench(p->ops,d,p->config);
     }
 }
 
-void set_config(t_config *config,t_stack *a, t_stack *b,t_ops *ops, float d)
+void set_config(t_program *p, float d)
 {
-	if (config->bench)
+	if (p->config->bench)
     {
-		set_bench(config, a, b ,ops,d);
+		set_bench(p,d);
     }
-	else if (config->simple)
+	else if (p->config->simple)
 	{
-		bubble_sort(a,ops);
+		bubble_sort(p);
 	}
-	else if (config->medium)
+	else if (p->config->medium)
     {
-		bucket_sort(a,b,ops);
+		bucket_sort(p);
     }
-	else if (config->complex)
+	else if (p->config->complex)
     {
-		radix_lsd_sort(a,b,ops);
+		radix_lsd_sort(p);
     }
-    else if (config->adaptative)
+    else if (p->config->adaptative)
     {
-        select_algorithm(d,a,b,ops);
+        select_algorithm(d,p);
     }
 }
 int main(int ac, char **av)
@@ -80,13 +80,18 @@ int main(int ac, char **av)
 	t_stack b;
 	t_ops ops= {0};
 	t_config config = parser(av,&a);
+    t_program p;
 	innit_stack_b(&b,a.size);
     float d = disorder(a.data,a.size);
+    p.a = &a;
+    p.b = &b;
+    p.ops = &ops;
+    p.config = &config;
     // printf("--- BEFORE SORTING ---\n");
     // print_stack(&a, "A");
     // print_stack(&b, "B");
     // printf("----------------------\n\n");
-	set_config(&config,&a,&b,&ops,d);
+	set_config(&p, d);
 		
 //     printf("\n--- AFTER SORTING ---\n");
 //     print_stack(&a, "A");

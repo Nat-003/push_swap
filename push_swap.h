@@ -37,6 +37,15 @@ typedef struct s_config
 	int bench;
 } t_config;
 
+typedef struct s_program
+{
+    t_stack  *a;
+    t_stack  *b;
+    t_ops    *ops;
+    t_config *config;
+} t_program;
+
+
 // helper function
 void innit_stack_b(t_stack *b,int size);
 void error_exit();
@@ -44,25 +53,24 @@ void error_exit();
 t_config parser(char **av,t_stack *a);
 
 /* Swap operations */
-void    sa(t_stack *a, t_ops *ops);
-void    sb(t_stack *b, t_ops *ops);
-void    ss(t_stack *a, t_stack *b, t_ops *ops);
+void    sa(t_program *p);
+void    sb(t_program *p);
+void    ss(t_program *p);
 
 int check_flags(char **av,t_config *config);
 
 /* Push operations */
-void    pa(t_stack *a, t_stack *b, t_ops *ops);
-void    pb(t_stack *a, t_stack *b, t_ops *ops);
+void    pa(t_program *p);
+void    pb(t_program *p);
 
 /* Rotate operations */
-void    ra(t_stack *a, t_ops *ops);
-void    rb(t_stack *b, t_ops *ops);
-void    rr(t_stack *a, t_stack *b, t_ops *ops);
-
+void    ra(t_program *p);
+void    rb(t_program *p);
+void    rr(t_program *p);
 /* Reverse rotate operations */
-void    rra(t_stack *a, t_ops *ops);
-void    rrb(t_stack *b, t_ops *ops);
-void    rrr(t_stack *a, t_stack *b, t_ops *ops);
+void    rra(t_program *p);
+void    rrb(t_program *p);
+void    rrr(t_program *p);
 
 /*disorder*/
 float disorder(int *arr, int size);
@@ -71,16 +79,16 @@ float disorder(int *arr, int size);
 void bench(t_ops *ops, float d, t_config *config);
 
 // adaptive 
-void select_algorithm(float d, t_stack *a,t_stack *b,t_ops *ops);
+void select_algorithm(float d, t_program *p);
 
 // void bubble_sort(t_stack *a, t_ops *ops);
-void bubble_sort(t_stack *a,t_ops *ops);
+void bubble_sort(t_program *p);
 
 // bucket sort O(nVn)
-void bucket_sort(t_stack *a, t_stack *b, t_ops *ops);
+void bucket_sort(t_program *p);
 
 // radix sort
-void radix_ops(t_stack *a, t_stack *b, int n, int bit, t_ops *ops);
-void radix_lsd_sort(t_stack *a, t_stack *b, t_ops *ops);
+void radix_ops(t_program *p, int n, int bit);
+void radix_lsd_sort(t_program *p);
 
 #endif

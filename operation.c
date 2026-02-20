@@ -1,225 +1,241 @@
 #include "push_swap.h"
-#include <unistd.h> // Ensure this is in your header or here for write()
-#include <stdio.h>
+#include <unistd.h>
 
-
-void sa(t_stack *a,t_ops *ops)
+void sa(t_program *p)
 {
-    int tmp;
-    if (a->size < 2)
-        return ;
-    tmp = a->data[0];
-    a->data[0] = a->data[1];
-    a->data[1] = tmp;
-    ops->sa++;
-    write(1, "sa\n", 3);
+	int tmp;
+
+	if (p->a->size < 2)
+		return ;
+	tmp = p->a->data[0];
+	p->a->data[0] = p->a->data[1];
+	p->a->data[1] = tmp;
+	p->ops->sa++;
+	if (!p->config->bench)
+		write(1, "sa\n", 3);
 }
 
-void sb(t_stack *b,t_ops *ops)
+void sb(t_program *p)
 {
-    int tmp;
-    if (b->size < 2)
-        return ;
-    tmp = b->data[0];
-    b->data[0] = b->data[1];
-    b->data[1] = tmp;
-    ops->sb++;
-    write(1, "sb\n", 3);
+	int tmp;
+
+	if (p->b->size < 2)
+		return ;
+	tmp = p->b->data[0];
+	p->b->data[0] = p->b->data[1];
+	p->b->data[1] = tmp;
+	p->ops->sb++;
+	if (!p->config->bench)
+		write(1, "sb\n", 3);
 }
 
-void ss(t_stack *a, t_stack *b,t_ops *ops)
+void ss(t_program *p)
 {
-    int tmp;
-    // Manual swap for a to avoid double printing sa/sb
-    if (a->size >= 2)
-    {
-        tmp = a->data[0];
-        a->data[0] = a->data[1];
-        a->data[1] = tmp;
-    }
-    // Manual swap for b
-    if (b->size >= 2)
-    {
-        tmp = b->data[0];
-        b->data[0] = b->data[1];
-        b->data[1] = tmp;
-    }
-    ops->ss++;
-    write(1, "ss\n", 3);
+	int tmp;
+
+	if (p->a->size >= 2)
+	{
+		tmp = p->a->data[0];
+		p->a->data[0] = p->a->data[1];
+		p->a->data[1] = tmp;
+	}
+	if (p->b->size >= 2)
+	{
+		tmp = p->b->data[0];
+		p->b->data[0] = p->b->data[1];
+		p->b->data[1] = tmp;
+	}
+	p->ops->ss++;
+	if (!p->config->bench)
+		write(1, "ss\n", 3);
 }
 
-void pa(t_stack *a, t_stack *b,t_ops *ops)
+void pa(t_program *p)
 {
-    int value;
-    int i;
-    if (b->size == 0)
-        return ;
-    value = b->data[0];
-    i = 0;
-    while (i < b->size - 1)
-    {
-        b->data[i] = b->data[i + 1];
-        i++;
-    }
-    b->size--;    
-    i = a->size;
-    while (i > 0)
-    {
-        a->data[i] = a->data[i - 1];
-        i--;
-    }
-    a->data[0] = value;
-    a->size++;
-    ops->pa++;
-    write(1, "pa\n", 3);
+	int i;
+
+	if (p->b->size == 0)
+		return ;
+	i = p->a->size;
+	while (i > 0)
+	{
+		p->a->data[i] = p->a->data[i - 1];
+		i--;
+	}
+	p->a->data[0] = p->b->data[0];
+	p->a->size++;
+	i = 0;
+	while (i < p->b->size - 1)
+	{
+		p->b->data[i] = p->b->data[i + 1];
+		i++;
+	}
+	p->b->size--;
+	p->ops->pa++;
+	if (!p->config->bench)
+		write(1, "pa\n", 3);
 }
 
-void pb(t_stack *a, t_stack *b,t_ops *ops)
+void pb(t_program *p)
 {
-    int value;
-    int i;
-    if (a->size == 0)
-        return ;
-    value = a->data[0];
-    i = 0;
-    while (i < a->size - 1)
-    {
-        a->data[i] = a->data[i + 1];
-        i++;
-    }
-    a->size--;    
-    i = b->size;
-    while (i > 0)
-    {
-        b->data[i] = b->data[i - 1];
-        i--;
-    }
-    b->data[0] = value;
-    b->size++;
-    ops->pb++;
-    write(1, "pb\n", 3);
+	int i;
+
+	if (p->a->size == 0)
+		return ;
+	i = p->b->size;
+	while (i > 0)
+	{
+		p->b->data[i] = p->b->data[i - 1];
+		i--;
+	}
+	p->b->data[0] = p->a->data[0];
+	p->b->size++;
+	i = 0;
+	while (i < p->a->size - 1)
+	{
+		p->a->data[i] = p->a->data[i + 1];
+		i++;
+	}
+	p->a->size--;
+	p->ops->pb++;
+	if (!p->config->bench)
+		write(1, "pb\n", 3);
 }
 
-void ra(t_stack *a,t_ops *ops)
+void ra(t_program *p)
 {
-    int first;
-    int i;
-    if (a->size < 2)
-        return ;
-    first = a->data[0];
-    i = 0;
-    while (i < a->size - 1)
-    {
-        a->data[i] = a->data[i + 1];
-        i++;
-    }
-    a->data[a->size - 1] = first;
-    ops->ra++;
-    write(1, "ra\n", 3);
+	int first;
+	int i;
+
+	if (p->a->size < 2)
+		return ;
+	first = p->a->data[0];
+	i = 0;
+	while (i < p->a->size - 1)
+	{
+		p->a->data[i] = p->a->data[i + 1];
+		i++;
+	}
+	p->a->data[p->a->size - 1] = first;
+	p->ops->ra++;
+	if (!p->config->bench)
+		write(1, "ra\n", 3);
 }
 
-void rb(t_stack *b,t_ops *ops)
+void rb(t_program *p)
 {
-    int first;
-    int i;
-    if (b->size < 2)
-        return ;
-    first = b->data[0];
-    i = 0;
-    while (i < b->size - 1)
-    {
-        b->data[i] = b->data[i + 1];
-        i++;
-    }
-    b->data[b->size - 1] = first;
-    ops->rb++;
-    write(1, "rb\n", 3);
+	int first;
+	int i;
+
+	if (p->b->size < 2)
+		return ;
+	first = p->b->data[0];
+	i = 0;
+	while (i < p->b->size - 1)
+	{
+		p->b->data[i] = p->b->data[i + 1];
+		i++;
+	}
+	p->b->data[p->b->size - 1] = first;
+	p->ops->rb++;
+	if (!p->config->bench)
+		write(1, "rb\n", 3);
 }
 
-void rr(t_stack *a, t_stack *b,t_ops *ops)
+void rr(t_program *p)
 {
-    // Logic for ra without write
-    int first;
-    int i;
-    if (a->size >= 2)
-    {
-        first = a->data[0];
-        i = -1;
-        while (++i < a->size - 1)
-            a->data[i] = a->data[i + 1];
-        a->data[a->size - 1] = first;
-    }
-    // Logic for rb without write
-    if (b->size >= 2)
-    {
-        first = b->data[0];
-        i = -1;
-        while (++i < b->size - 1)
-            b->data[i] = b->data[i + 1];
-        b->data[b->size - 1] = first;
-    }
-    ops->rr++;
-    write(1, "rr\n", 3);
+	int first;
+	int i;
+
+	if (p->a->size >= 2)
+	{
+		first = p->a->data[0];
+		i = -1;
+		while (++i < p->a->size - 1)
+			p->a->data[i] = p->a->data[i + 1];
+		p->a->data[p->a->size - 1] = first;
+	}
+	if (p->b->size >= 2)
+	{
+		first = p->b->data[0];
+		i = -1;
+		while (++i < p->b->size - 1)
+			p->b->data[i] = p->b->data[i + 1];
+		p->b->data[p->b->size - 1] = first;
+	}
+	p->ops->rr++;
+	if (!p->config->bench)
+		write(1, "rr\n", 3);
 }
 
-void rra(t_stack *a,t_ops *ops)
+void rra(t_program *p)
 {
-    int last;
-    int i;
-    if (a->size  < 2)
-        return ;
-    last = a->data[a->size -1];
-    i = a->size -1;
-    while (i > 0)
-    {
-        a->data[i] = a->data[i - 1];
-        i--;
-    }
-    a->data[0] = last;
-    ops->rra++;
-    write(1, "rra\n", 4);
+	int last;
+	int i;
+
+	if (p->a->size < 2)
+		return ;
+	last = p->a->data[p->a->size - 1];
+	i = p->a->size - 1;
+	while (i > 0)
+	{
+		p->a->data[i] = p->a->data[i - 1];
+		i--;
+	}
+	p->a->data[0] = last;
+	p->ops->rra++;
+	if (!p->config->bench)
+		write(1, "rra\n", 4);
 }
 
-void rrb(t_stack *b,t_ops *ops)
+void rrb(t_program *p)
 {
-    int last;
-    int i;
-    if (!b || b->size < 2)
-        return ;
-    last = b->data[b->size - 1];
-    i = b->size - 1;
-    while (i > 0)
-    {
-        b->data[i] = b->data[i - 1];
-        i--;
-    }
-    b->data[0] = last;
-    ops->rrb++;
-    write(1, "rrb\n", 4);
+	int last;
+	int i;
+
+	if (p->b->size < 2)
+		return ;
+	last = p->b->data[p->b->size - 1];
+	i = p->b->size - 1;
+	while (i > 0)
+	{
+		p->b->data[i] = p->b->data[i - 1];
+		i--;
+	}
+	p->b->data[0] = last;
+	p->ops->rrb++;
+	if (!p->config->bench)
+		write(1, "rrb\n", 4);
 }
 
-void rrr(t_stack *a, t_stack *b,t_ops *ops)
+void rrr(t_program *p)
 {
-    // Logic for rra without write
-    int last;
-    int i;
-    if (a->size >= 2)
-    {
-        last = a->data[a->size - 1];
-        i = a->size;
-        while (--i > 0)
-            a->data[i] = a->data[i - 1];
-        a->data[0] = last;
-    }
-    // Logic for rrb without write
-    if (b->size >= 2)
-    {
-        last = b->data[b->size - 1];
-        i = b->size;
-        while (--i > 0)
-            b->data[i] = b->data[i - 1];
-        b->data[0] = last;
-    }
-    ops->rrr++;
-    write(1, "rrr\n", 4);
+	int last;
+	int i;
+
+	if (p->a->size >= 2)
+	{
+		last = p->a->data[p->a->size - 1];
+		i = p->a->size - 1;
+		while (i > 0)
+		{
+			p->a->data[i] = p->a->data[i - 1];
+			i--;
+		}
+		p->a->data[0] = last;
+	}
+	if (p->b->size >= 2)
+	{
+		last = p->b->data[p->b->size - 1];
+		i = p->b->size - 1;
+		while (i > 0)
+		{
+			p->b->data[i] = p->b->data[i - 1];
+			i--;
+		}
+		p->b->data[0] = last;
+	}
+	p->ops->rrr++;
+	if (!p->config->bench)
+		write(1, "rrr\n", 4);
 }

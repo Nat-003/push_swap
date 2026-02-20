@@ -89,21 +89,21 @@ int find_position(t_stack *x, int max)
     return (-1);
 }
 
-void push_back_to_a(t_stack *a, t_stack *b, t_ops *ops)
+void push_back_to_a(t_program *p)
 {
-	while (b->size > 0)
+	while (p->b->size > 0)
     {
-        int max_val = find_max_value(b);
-        int pos = find_position(b, max_val);
+        int max_val = find_max_value(p->b);
+        int pos = find_position(p->b, max_val);
         while (pos != 0)
         {
-            if (pos <= b->size / 2)
-                rb(b, ops);
+            if (pos <= p->b->size / 2)
+                rb(p);
             else
-                rrb(b, ops);
-            pos = find_position(b, max_val);
+                rrb(p);
+            pos = find_position(p->b, max_val);
         }
-        pa(a, b, ops);
+        pa(p);
     }
 }
 void innit_vars(int *bucket_count, int *bucket_size,int *current_min,int *current_max,int original_size)
@@ -114,7 +114,7 @@ void innit_vars(int *bucket_count, int *bucket_size,int *current_min,int *curren
     *current_min = 0;
     *current_max = *bucket_size - 1;
 }
-void push_a_to_b(t_stack *a, t_stack *b, t_ops *ops, int original_size)
+void push_a_to_b(t_program *p, int original_size)
 {
 	int i;
 	int bucket_count;
@@ -129,12 +129,12 @@ void push_a_to_b(t_stack *a, t_stack *b, t_ops *ops, int original_size)
         if (i == bucket_count - 1) 
             current_max = original_size - 1;
 
-        while (still_in_bucket(a, current_min, current_max))
+        while (still_in_bucket(p->a, current_min, current_max))
         {
-            if (a->data[0] >= current_min && a->data[0] <= current_max)
-                pb(a, b, ops);
+            if (p->a->data[0] >= current_min && p->a->data[0] <= current_max)
+                pb(p);
             else
-                ra(a, ops);
+                ra(p);
         }
         current_min += bucket_size;
         current_max += bucket_size;
@@ -163,25 +163,25 @@ void change_value_to_indexes(t_stack *a, t_ops *ops,int original_size,int *copy)
 }
 
 /* The fixed Bucket Sort logic */
-void bucket_sort(t_stack *a, t_stack *b, t_ops *ops)
+void bucket_sort(t_program *p)
 {
     int *copy;
-    int original_size = a->size;
+    int original_size = p->a->size;
     int i, j, bucket_count, bucket_size, current_min, current_max;
 
-    copy = copy_arr(a);
+    copy = copy_arr(p->a);
 	if (!copy_arr)
 		return ; 
 
     sort_array(copy, original_size);
-	change_value_to_indexes(a,ops,original_size,copy);
-	push_a_to_b(a,b,ops,original_size);
-	push_back_to_a(a,b,ops);
+	change_value_to_indexes(p->a,p->ops,original_size,copy);
+	push_a_to_b(p,original_size);
+	push_back_to_a(p);
     i = 0;
-    while (i < a->size)
+    while (i < p->a->size)
     {
-        int index_stored = a->data[i];
-        a->data[i] = copy[index_stored];
+        int index_stored = p->a->data[i];
+        p->a->data[i] = copy[index_stored];
         i++;
     }
     free(copy);
