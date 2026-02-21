@@ -49,6 +49,9 @@ typedef struct s_program
 // helper function
 void innit_stack_b(t_stack *b,int size);
 void error_exit();
+
+
+char	**ft_split(char const *s, char c);
 // parser
 t_config parser(char **av,t_stack *a);
 

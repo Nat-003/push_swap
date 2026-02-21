@@ -31,7 +31,6 @@ void set_flags(char *flag,t_config *config)
 	{
 		config->simple = 1;
 		check_config(config);
-		
 	}
 	else if (ft_strcmp(flag,"--medium") == 0)
 	{
@@ -49,9 +48,7 @@ void set_flags(char *flag,t_config *config)
 		check_config(config);
 	}
 	else if (ft_strcmp(flag,"--bench") == 0)
-	{
 		config->bench = 1;
-	}
 	else
 		error_exit();
 }
@@ -128,10 +125,25 @@ void push_value_to_a(t_stack *a,int value)
 	a->size = a->size + 1;
 
 }
+
+void free_split(char **s)
+{
+	int j = 0;
+		while (s[j])
+		{
+			free(s[j]);
+			j++;
+		}
+		free(s);
+}
 t_config parser(char **av,t_stack *a)
 {
 	int i;
-	int j;
+	int k;
+	int total;
+	char **split;
+	char **split2;
+	int count;
 	t_config config;
 	long value;
 	config.simple = 0;
@@ -140,11 +152,23 @@ t_config parser(char **av,t_stack *a)
 	config.adaptative = 0;
 	config.bench = 0;
 	i = check_flags(av,&config);
-	j = i;
-	while (av[j])
-		j++;
-	a->data = malloc(sizeof(int) * (j - i));
-
+	k = i;
+	total = 0;
+	while (av[k])
+	{
+		count = 0;
+		split = ft_split(av[k],' ');
+		if (!split)
+			error_exit(); 
+		while (split[count])
+			count++;
+		total += count;
+		free_split(split);
+		k++;
+	}
+	if (total == 0)
+    	error_exit();
+	a->data = malloc(sizeof(int) * total);
 	if (!a->data)
 		error_exit();
 	
@@ -153,14 +177,24 @@ t_config parser(char **av,t_stack *a)
 		config.adaptative = 1;
 	while (av[i])
 	{
-		if (!is_valid_num(av[i]))
+		split2 = ft_split(av[i], ' ');
+		if (!split2)
 			error_exit();
-		value = ft_atol(av[i]);
-		if (value < INT_MIN || value > INT_MAX )
-			error_exit();
-		if (is_dup(a,(int)value))
-			error_exit();
-		push_value_to_a(a,(int)value);
+		
+		count = 0;
+		while (split2[count])
+		{
+			if (!is_valid_num(split2[count]))
+				error_exit();
+			value = ft_atol(split2[count]);
+			if (value < INT_MIN || value > INT_MAX )
+				error_exit();
+			if (is_dup(a,(int)value))
+				error_exit();
+			push_value_to_a(a,(int)value);
+			count++;
+		}
+		free_split(split2);
 		i++;
 	}
 	return (config);

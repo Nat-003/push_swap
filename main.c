@@ -14,16 +14,13 @@ void select_algorithm(float d, t_program *p)
     if (d < 0.30f)
     {
         bubble_sort(p);
-        printf("O(n2)");
     }
     else if (d < 0.50f)
     {
-        printf("O(nVn)\n");
         bucket_sort(p);
     }
     else
     {
-        printf("n log n\n");
         radix_lsd_sort(p);
     }
 }
